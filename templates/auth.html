@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% set title = 'Register or Login' %}
+
+{% block content %}
+<section class="panel narrow">
+  <h2>User Registration / Login</h2>
+  <p class="muted">Register with name, city, and delivery platform to create your profile.</p>
+
+  <form id="register-form" class="form-grid">
+    <label>
+      Name
+      <input type="text" name="name" required placeholder="Aman Yadav" />
+    </label>
+
+    <label>
+      Location
+      <select name="location" required>
+        <option value="">Select city</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+        <option>Bengaluru</option>
+        <option>Chennai</option>
+        <option>Kolkata</option>
+        <option>Hyderabad</option>
+        <option>Pune</option>
+      </select>
+    </label>
+
+    <label>
+      Platform
+      <select name="platform" required>
+        <option value="">Select platform</option>
+        <option>Swiggy</option>
+        <option>Zomato</option>
+        <option>Blinkit</option>
+        <option>Zepto</option>
+        <option>Dunzo</option>
+      </select>
+    </label>
+
+    <button class="btn primary" type="submit">Register and Continue</button>
+  </form>
+
+  <div id="register-result" class="card hidden"></div>
+</section>
+{% endblock %}

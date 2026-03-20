@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% set title = 'Worker Dashboard' %}
+
+{% block content %}
+<section class="panel">
+  <h2>Dashboard</h2>
+  <p class="muted">Track active policy, weekly premium, risk level, claims history, and earnings protected.</p>
+
+  {% if summary %}
+  <div class="grid-4 stagger">
+    <article class="card stat">
+      <p class="label">Risk Level</p>
+      <h3>{{ summary.risk.risk_level }}</h3>
+      <p>Score: {{ summary.risk.risk_score }}</p>
+    </article>
+
+    <article class="card stat">
+      <p class="label">Weekly Premium</p>
+      <h3>INR {{ summary.pricing.weekly_premium_inr }}</h3>
+      <p>Coverage: INR {{ summary.pricing.coverage_inr }}</p>
+    </article>
+
+    <article class="card stat">
+      <p class="label">Active Policy</p>
+      <h3>{{ 'Yes' if summary.policy else 'No' }}</h3>
+      <p>{{ summary.policy.policy_id if summary.policy else 'Buy a plan to activate' }}</p>
+    </article>
+
+    <article class="card stat">
+      <p class="label">Earnings Protected</p>
+      <h3>INR {{ summary.earnings_protected }}</h3>
+      <p>Total approved payouts</p>
+    </article>
+  </div>
+
+  <div class="actions wrap">
+    {% if not summary.policy %}
+      <button class="btn primary" data-buy-plan="{{ summary.user.id }}">Buy Weekly Plan</button>
+    {% endif %}
+    <button class="btn accent" data-trigger="rain" data-user="{{ summary.user.id }}">Simulate Rain</button>
+    <button class="btn accent" data-trigger="heat" data-user="{{ summary.user.id }}">Simulate Heat</button>
+    <button class="btn accent" data-trigger="pollution" data-user="{{ summary.user.id }}">Simulate AQI Spike</button>
+    <a class="btn ghost" href="{{ url_for('claims_page') }}?user_id={{ summary.user.id }}">View Claim</a>
+  </div>
+
+  <div id="event-result" class="card hidden"></div>
+
+  <h3>Claims History</h3>
+  {% if summary.claims %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Claim ID</th>
+            <th>Trigger</th>
+            <th>Status</th>
+            <th>Payout</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in summary.claims|reverse %}
+          <tr>
+            <td>{{ c.claim_id[:8] }}...</td>
+            <td>{{ c.event_type }}</td>
+            <td>{{ c.status }}</td>
+            <td>INR {{ c.payout_inr }}</td>
+            <td>{{ c.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="muted">No claims yet. Trigger a weather event to test auto-claim flow.</p>
+  {% endif %}
+
+  {% else %}
+  <div class="card">
+    <p>Dashboard needs a user context.</p>
+    <p class="muted">Register first, then use the generated dashboard link with user_id.</p>
+    <a class="btn primary" href="{{ url_for('auth_page') }}">Go to Registration</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% set title = 'Insurance Plan' %}
+
+{% block content %}
+<section class="panel">
+  <h2>Insurance Plan</h2>
+  <p class="muted">Weekly income-loss coverage with AI-based dynamic pricing.</p>
+
+  {% if summary %}
+  <div class="grid-3">
+    <article class="card">
+      <p class="label">City</p>
+      <h3>{{ summary.user.location }}</h3>
+      <p>Platform: {{ summary.user.platform }}</p>
+    </article>
+    <article class="card">
+      <p class="label">AI Risk</p>
+      <h3>{{ summary.risk.risk_level }}</h3>
+      <p>Risk score: {{ summary.risk.risk_score }}</p>
+    </article>
+    <article class="card">
+      <p class="label">Weekly Pricing</p>
+      <h3>INR {{ summary.pricing.weekly_premium_inr }}</h3>
+      <p>Coverage: INR {{ summary.pricing.coverage_inr }}</p>
+    </article>
+  </div>
+
+  <article class="card">
+    <h3>Coverage Rules</h3>
+    <ul class="list">
+      <li>Coverage type: income loss only.</li>
+      <li>Pricing cadence: weekly premium.</li>
+      <li>Trigger model: parametric, no manual filing.</li>
+      <li>Auto payout on verified external disruption events.</li>
+    </ul>
+    {% if summary.policy %}
+      <p class="ok">Policy is active: {{ summary.policy.policy_id }}</p>
+    {% else %}
+      <button class="btn primary" data-buy-plan="{{ summary.user.id }}">Activate Weekly Protection</button>
+    {% endif %}
+  </article>
+
+  <div id="plan-result" class="card hidden"></div>
+  {% else %}
+  <div class="card">
+    <p>Open this page with a user_id query param after registration.</p>
+    <a class="btn primary" href="{{ url_for('auth_page') }}">Register Now</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

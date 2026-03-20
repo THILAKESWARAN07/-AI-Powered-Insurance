@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% set title = 'Claim Status' %}
+
+{% block content %}
+<section class="panel">
+  <h2>Claim Status</h2>
+  <p class="muted">Claims are automatically created when parametric trigger thresholds are met.</p>
+
+  {% if summary %}
+  <article class="card">
+    <h3>Latest Claim</h3>
+    {% if summary.claims %}
+      {% set latest = summary.claims[-1] %}
+      <p><strong>Status:</strong> {{ latest.status }}</p>
+      <p><strong>Trigger:</strong> {{ latest.event_type }}</p>
+      <p><strong>Payout:</strong> INR {{ latest.payout_inr }}</p>
+      <p><strong>Fraud Flag:</strong> {{ 'Yes' if latest.fraud_flag else 'No' }}</p>
+      {% if latest.fraud_reasons %}
+      <p><strong>Fraud Notes:</strong> {{ latest.fraud_reasons|join(', ') }}</p>
+      {% endif %}
+    {% else %}
+      <p>No claim generated yet.</p>
+    {% endif %}
+  </article>
+
+  <div class="actions">
+    <button class="btn accent" data-trigger="rain" data-user="{{ summary.user.id }}">Simulate Rain</button>
+    <button class="btn accent" data-trigger="heat" data-user="{{ summary.user.id }}">Simulate Heat</button>
+    <button class="btn ghost" data-refresh-claim="{{ summary.user.id }}">Refresh Claim Data</button>
+  </div>
+
+  <div id="claim-live" class="card hidden"></div>
+  {% else %}
+  <div class="card">
+    <p>Claim page needs user_id in query.</p>
+    <a class="btn primary" href="{{ url_for('auth_page') }}">Start at Registration</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

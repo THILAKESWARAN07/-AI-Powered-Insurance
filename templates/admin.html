@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% set title = 'Admin Analytics' %}
+
+{% block content %}
+<section class="panel">
+  <h2>Admin / Analytics</h2>
+  <p class="muted">Monitor users, claim outcomes, and risk distribution for portfolio control.</p>
+
+  <div class="grid-4">
+    <article class="card stat">
+      <p class="label">Users</p>
+      <h3>{{ data.summary.total_users }}</h3>
+    </article>
+    <article class="card stat">
+      <p class="label">Total Claims</p>
+      <h3>{{ data.summary.total_claims }}</h3>
+    </article>
+    <article class="card stat">
+      <p class="label">Approved</p>
+      <h3>{{ data.summary.approved_claims }}</h3>
+    </article>
+    <article class="card stat">
+      <p class="label">Flagged</p>
+      <h3>{{ data.summary.flagged_claims }}</h3>
+    </article>
+  </div>
+
+  <article class="card">
+    <h3>Risk Distribution</h3>
+    <div class="chips">
+      {% for level, count in data.risk_distribution.items() %}
+        <span class="chip">{{ level }}: {{ count }}</span>
+      {% else %}
+        <span class="chip">No users yet</span>
+      {% endfor %}
+    </div>
+    <p><strong>Total Payouts:</strong> INR {{ data.summary.total_payouts_inr }}</p>
+  </article>
+
+  <div class="grid-2">
+    <article class="card">
+      <h3>All Users</h3>
+      {% if data.users %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Location</th><th>Platform</th><th>User ID</th></tr>
+          </thead>
+          <tbody>
+            {% for u in data.users %}
+              <tr><td>{{ u.name }}</td><td>{{ u.location }}</td><td>{{ u.platform }}</td><td>{{ u.id[:8] }}...</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p>No users registered.</p>
+      {% endif %}
+    </article>
+
+    <article class="card">
+      <h3>All Claims</h3>
+      {% if data.claims %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>User</th><th>Trigger</th><th>Status</th><th>Payout</th></tr>
+          </thead>
+          <tbody>
+            {% for c in data.claims|reverse %}
+              <tr><td>{{ c.user_name }}</td><td>{{ c.event_type }}</td><td>{{ c.status }}</td><td>INR {{ c.payout_inr }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p>No claims generated.</p>
+      {% endif %}
+    </article>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% set title = 'AI Parametric Insurance for Gig Workers' %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Hackathon Phase 1 Prototype</p>
+    <h1>AI-Powered Weekly Income Protection for Delivery Partners</h1>
+    <p>
+      ShieldGig protects gig delivery workers from income loss caused by weather shocks,
+      air pollution spikes, and curfews. This is <strong>parametric insurance</strong>:
+      payout is triggered automatically by external data, without manual claim filing.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="{{ url_for('auth_page') }}">Get Covered</a>
+      <a class="btn ghost" href="{{ url_for('admin_page') }}">View Analytics</a>
+    </div>
+  </div>
+  <div class="hero-cards stagger">
+    <article class="card glow">
+      <h3>Weekly Pricing</h3>
+      <p>Dynamic premium based on city-level AI risk score.</p>
+    </article>
+    <article class="card glow">
+      <h3>Auto Triggers</h3>
+      <p>Rain > 50mm, Heat > 40C, AQI > 300, or curfew events.</p>
+    </article>
+    <article class="card glow">
+      <h3>Fraud Checks</h3>
+      <p>Duplicate-claim prevention and mock GPS location validation.</p>
+    </article>
+  </div>
+</section>
+
+<section class="grid-3 stagger">
+  <article class="card">
+    <h3>Who It Covers</h3>
+    <p>Delivery workers on platforms like Swiggy, Zomato, Blinkit, and Zepto.</p>
+  </article>
+  <article class="card">
+    <h3>What It Covers</h3>
+    <p>Only income loss during disruption windows. No health or vehicle coverage.</p>
+  </article>
+  <article class="card">
+    <h3>Why It Matters</h3>
+    <p>Instant payouts help workers handle cash-flow disruptions in the same week.</p>
+  </article>
+</section>
+{% endblock %}
